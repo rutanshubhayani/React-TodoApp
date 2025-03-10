@@ -17,14 +17,21 @@ function AddTodo() {
         console.log("Button clicked", value)
     }
 
+    const DeleteTodo = (index) => {
+        console.log("Delete button clicked");
+        setTodo(isTodo.filter((_, i) => i !== index));
+    };
+
     return (
         <>
-            <input className='Input' value={value} onChange={handleChange} type="text" placeholder="Add a new task"  />
+            <h2>To Do List</h2>
+            <input className='Input' value={value} onChange={handleChange} type="text" placeholder="Add a new task" />
             <button onClick={handleAddTodo}>Add</button>
-            <ul>
+            <ul style={{textAlign: 'left'}}>
                 {isTodo.map((a, index) => (
                     <li key={index}>
                         {a}
+                        <button onClick={() => DeleteTodo(index)} style={{ marginLeft: '10px' }}>X</button>
                     </li>
                 ))}
             </ul>
