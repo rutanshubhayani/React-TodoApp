@@ -8,7 +8,7 @@ function AddTodo() {
         setValue(event.target.value)
     }
     const handleAddTodo = () => {
-        if (!value) {
+        if (!value) {  
             console.log("Please enter a task");
             return
         }
