@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 function AddTodo() {
-    const [isTodo, setTodo] = useState([]);
+    const [todoList, setTodoList] = useState([]);
     const [value, setValue] = useState("");
-    const [idCounter, setIdCounter] = useState(1); // Start ID from 1
-
+    const [idCounter, setIdCounter] = useState(1); 
     const handleChange = (event) => {
         setValue(event.target.value);
     };
@@ -15,23 +14,23 @@ function AddTodo() {
             return;
         }
 
-        const id = {
+        const todo = {
             id: idCounter,
             text: value
         };
 
-        setTodo([...isTodo, id]);
+        setTodoList([...todoList, todo]);
         setValue("");
         setIdCounter(idCounter + 1); 
     };
 
-    const DeleteTodo = (id) => {
-        setTodo(isTodo.filter((task) => task.id !== id));
+    const deleteTodo = (id) => {
+        setTodoList(todoList.filter((task) => task.id !== id));
     };
 
     useEffect(() => {
-        console.log("List:", isTodo);
-    }, [isTodo]);
+        console.log("List:", todoList);
+    }, [todoList]);
 
     return (
         <>
@@ -39,10 +38,10 @@ function AddTodo() {
             <input className='Input' value={value} onChange={handleChange} type="text" placeholder="Add a new task" />
             <button onClick={handleAddTodo}>Add</button>
             <ul style={{ textAlign: 'left' }}>
-                {isTodo.map((task) => (
+                {todoList.map((task) => (
                     <li key={task.id}>
                         <strong>{task.id}.</strong> {task.text}
-                        <button onClick={() => DeleteTodo(task.id)} style={{ marginLeft: '10px' }}>X</button>
+                        <button onClick={() => deleteTodo(task.id)} style={{ marginLeft: '10px' }}>X</button>
                     </li>
                 ))}
             </ul>
@@ -51,3 +50,24 @@ function AddTodo() {
 }
 
 export default AddTodo;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 1.Create edit button.
+// 2.Keep edit button in all todos.
+// 3.Handle edit button click and add todo value in input box.
+// 4.Change add button to update button.
+// 5.Handle user input.
+// 6.Update todo in the list on click of update button.
+// 7.Clear input box after update todo and change update button to add button. 
