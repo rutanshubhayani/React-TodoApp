@@ -3,29 +3,47 @@ import React, { useState, useEffect } from 'react';
 function AddTodo() {
     const [todoList, setTodoList] = useState([]);
     const [value, setValue] = useState("");
-    const [idCounter, setIdCounter] = useState(1); 
+    const [idCounter, setIdCounter] = useState(1);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null); 
+
     const handleChange = (event) => {
         setValue(event.target.value);
     };
 
-    const handleAddTodo = () => {
+    const handleAddOrUpdateTodo = () => {
         if (!value) {
             console.log("Please enter a task");
             return;
         }
 
-        const todo = {
-            id: idCounter,
-            text: value
-        };
+        if (isEditing) {
+            setTodoList(todoList.map(todo =>
+                todo.id === editId ? { ...todo, text: value } : todo
+            ));
+            setIsEditing(false);
+            setEditId(null);
+        } else {
+            const todo = {
+                id: idCounter,
+                text: value
+            };
+            setTodoList([...todoList, todo]);
+            setIdCounter(idCounter + 1);
+        }
 
-        setTodoList([...todoList, todo]);
         setValue("");
-        setIdCounter(idCounter + 1); 
     };
 
     const deleteTodo = (id) => {
         setTodoList(todoList.filter((task) => task.id !== id));
+    };
+
+    const editTodo = (id) => {
+        const todoToEdit = todoList.find(todo => todo.id === id);
+        setValue(todoToEdit.text);
+        setIsEditing(true);
+        setEditId(id); 
     };
 
     useEffect(() => {
@@ -36,10 +54,12 @@ function AddTodo() {
         <>
             <h2>To Do List</h2>
             <input className='Input' value={value} onChange={handleChange} type="text" placeholder="Add a new task" />
-            <button onClick={handleAddTodo}>Add</button>
-            <ul style={{ textAlign: 'left' }}>
+            <button onClick={handleAddOrUpdateTodo}>{isEditing ? "Update" : "Add"}</button>
+            <ul style={{ textAlign: 'left', listStyleType: 'none' }}>
                 {todoList.map((task) => (
-                    <li key={task.id}>
+                    <li style={{padding:'5px'}} key={task.id}>
+                        <button onClick={() => editTodo(task.id)} style={{ margin: '5px' }}>Edit</button>
+
                         <strong>{task.id}.</strong> {task.text}
                         <button onClick={() => deleteTodo(task.id)} style={{ marginLeft: '10px' }}>X</button>
                     </li>
@@ -50,6 +70,9 @@ function AddTodo() {
 }
 
 export default AddTodo;
+
+
+
 
 
 
